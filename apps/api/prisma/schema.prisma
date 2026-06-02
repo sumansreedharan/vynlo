@@ -20,3 +20,19 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Lead {
+  id        String   @id @default(cuid())
+
+  name      String
+
+  email     String?
+
+  phone     String?
+
+  status    String   @default("new")
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
