@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { Lead } from "../types/leads.types";
+import type { Lead } from "../types/leads.types";
 import { getLeads } from "@/src/services/leads.service";
 
-  export function useLeads() {
+export function useLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchLeads() {
       try {
-        const token =
-          localStorage.getItem('token');
+        const token = localStorage.getItem("token");
 
-        if (!token) return;
+        // if (!token) return;
+        if (!token) {
+          setLoading(false);
+          return;
+        }
 
         const data = await getLeads(token);
 
@@ -28,10 +31,7 @@ import { getLeads } from "@/src/services/leads.service";
   }, []);
 
   const addLead = (newLead: Lead) => {
-    setLeads((prev) => [
-      newLead,
-      ...prev,
-    ]);
+    setLeads((prev) => [newLead, ...prev]);
   };
 
   return {
