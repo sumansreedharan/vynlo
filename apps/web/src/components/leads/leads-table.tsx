@@ -1,11 +1,13 @@
 import type { Lead } from "../../features/leads/types/leads.types";
+import Button from "../ui/button";
 import { Card } from "../ui/card";
 
 type LeadsTableProps = {
   leads: Lead[];
+  onEdit: (lead: Lead) => void;
 };
 
-export default function LeadsTable({ leads }: LeadsTableProps) {
+export default function LeadsTable({ leads, onEdit }: LeadsTableProps) {
   // Helper utility to style dynamic status markers cleanly
   const getStatusStyle = (status: string) => {
     const normal = status?.toLowerCase() || "";
@@ -30,6 +32,7 @@ export default function LeadsTable({ leads }: LeadsTableProps) {
             <th className="p-4">Email</th>
             <th className="p-4">Phone</th>
             <th className="p-4 pr-6 text-right">Status</th>
+            <th className="p-4 pr-6 text-right">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-900/60 text-sm text-zinc-300">
@@ -53,6 +56,15 @@ export default function LeadsTable({ leads }: LeadsTableProps) {
                 >
                   {lead.status}
                 </span>
+              </td>
+              <td className="p-4 pr-6 text-right">
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => onEdit(lead)}
+                >
+                  Edit
+                </Button>
               </td>
             </tr>
           ))}

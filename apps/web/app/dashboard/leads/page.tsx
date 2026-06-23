@@ -18,10 +18,14 @@ import type { Lead } from "@/src/features/leads/types/leads.types";
 import LeadsTable from "@/src/components/leads/leads-table";
 import CreateLeadModal from "@/src/components/leads/create-lead-modal";
 import { useLeads } from "@/src/features/leads/hooks/use-leads";
+import EditLeadModal from "@/src/components/leads/edit-lead-modal";
 
 export default function LeadsPage() {
-  const { leads, loading, addLead } = useLeads();
+  const { leads, loading, addLead ,updateLeadInState} = useLeads();
   const [open, setOpen] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   if (loading) {
     return (
@@ -77,7 +81,16 @@ export default function LeadsPage() {
       <CreateLeadModal
         open={open}
         onClose={() => setOpen(false)}
-         onLeadCreated={addLead}
+        onLeadCreated={addLead}
+      />
+      <EditLeadModal
+        open={isEditOpen}
+        onClose={() => {
+          setIsEditOpen(false);
+          setSelectedLead(null);
+        }}
+        lead={selectedLead}
+        onLeadUpdated={updateLeadInState}
       />
 
       {/* Leads Content Wrapper */}
@@ -98,7 +111,13 @@ export default function LeadsPage() {
           </p>
         </Card>
       ) : (
-        <LeadsTable leads={leads} />
+        <LeadsTable
+          leads={leads}
+          onEdit={(lead) => {
+            setSelectedLead(lead);
+            setIsEditOpen(true);
+          }}
+        />
       )}
     </div>
   );

@@ -34,9 +34,22 @@ export function useLeads() {
     setLeads((prev) => [newLead, ...prev]);
   };
 
+  const updateLeadInState = (
+  updatedLead: Lead,
+) => {
+  setLeads((prev) =>
+    prev.map((lead) =>
+      lead.id === updatedLead.id
+        ? updatedLead
+        : lead,
+    ),
+  );
+};
+
   return {
     leads,
     loading,
     addLead,
+    updateLeadInState,
   };
 }
